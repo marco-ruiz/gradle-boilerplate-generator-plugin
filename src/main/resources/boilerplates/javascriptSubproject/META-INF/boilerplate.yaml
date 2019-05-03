@@ -1,0 +1,25 @@
+bindings:
+    subProjectName: "js"
+
+translations:
+    - type: "project"
+      filename: "src"
+      subDir: "${subProjectName}"
+      required: true
+
+    - type: "project"
+      filename: "public"
+      subDir: "${subProjectName}"
+      required: true
+
+    - templateFilename: "subproject.gradle"
+      type: "project"
+      filename: "${subProjectName}.gradle"
+      subDir: "${subProjectName}"
+      required: true
+      
+    - templateFilename: "js.gradle"
+      type: "project"
+      filename: "js.gradle"
+      required: false
+      

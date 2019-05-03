@@ -1,0 +1,2 @@
+# Gradle Boilerplate Generator Plugin
+

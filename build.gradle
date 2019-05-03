@@ -1,0 +1,168 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		jcenter()
+	}
+}
+
+plugins {
+//	id 'java'
+	id 'groovy'
+	id 'java-gradle-plugin'
+	id 'eclipse'
+	id 'maven-publish'
+	id 'com.jfrog.bintray' version '1.8.4'
+}
+
+eclipse.classpath.downloadJavadoc = true
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	implementation localGroovy()
+//	implementation gradleApi()
+	implementation 'org.yaml:snakeyaml:1.24'
+}
+
+sourceSets {
+	main {
+		java { srcDirs = [] }
+		groovy { srcDirs = ["src/main/java", "src/main/groovy"] }
+		resources { srcDirs = ["src/main/resources"] }
+	}
+}
+
+gradlePlugin {
+	plugins {
+		thePlugin {
+			id = 'com.bop.boilerplater-plugin'
+			implementationClass = 'com.bop.gradle.boilerplate.GeneratorPlugin'
+		}
+	}
+}
+
+// custom tasks for creating source/javadoc jars
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+// add javadoc/source jar tasks as artifacts
+artifacts {
+	archives sourcesJar, javadocJar
+}
+
+group = 'com.bop'
+version = '0.1.0'
+
+def userId = 'marco-ruiz'
+def gitUrl = "https://github.com/${userId}/${project.name}"
+def description = 'Gradle plugin with tasks to generate customizable boilerplates (web resources files, subprojects, etc)'
+
+def pomConfig = {
+	licenses {
+		license {
+			name "The Apache Software License, Version 2.0"
+			url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+//			distribution "repo"
+		}
+	}
+	developers {
+		developer {
+			id userId
+			name "Marco Ruiz"
+			email "marco.a.ruiz@gmail.com"
+		}
+	}
+	
+	scm {
+		connection "${gitUrl}.git"
+		developerConnection "${gitUrl}.git"
+		url gitUrl
+	}
+}
+
+publishing {
+	publications {
+		MavenJava(MavenPublication) {
+			groupId project.group
+			artifactId project.name
+			version project.version
+
+			if (plugins.hasPlugin('war')) {
+				from components.web
+			} else {
+				from components.java
+			}
+
+			artifact sourcesJar
+			artifact javadocJar
+			
+			pom.withXml {
+				def root = asNode()
+				root.appendNode('description', description)
+				root.appendNode('name', 'Gradle Boilerplate Generator Plugin')
+				root.appendNode('url', gitUrl)
+				root.children().last() + pomConfig
+			}
+		}
+	}
+}
+
+bintray {
+	user = project.getProperty('bintrayUser')
+	key = project.getProperty('bintrayKey')
+
+	publications = ['MavenJava'] // When uploading Maven-based publication files
+	dryRun = false // Whether to run this as dry-run, without deploying
+	publish = true // If version should be auto published after an upload
+	pkg {
+		userOrg = userId
+		repo = project.name
+		name = project.name
+		desc = description
+		
+		websiteUrl = gitUrl
+		issueTrackerUrl = "${gitUrl}/issues"
+		vcsUrl = "${gitUrl}.git"
+		licenses = ['Apache-2.0']
+		labels = ['gradle', 'plugin', 'generator', 'boilerplate']
+		publicDownloadNumbers = true
+
+//		githubRepo = gitUrl - "https://github.com"
+//		githubReleaseNotesFile = 'README.md'
+
+		version {
+			name = project.version //Bintray logical version name
+			released = new Date()
+			desc = ''
+			vcsTag = ''
+//			attributes = ['key': 'value']
+//			gpg {
+//				sign = true //Determines whether to GPG sign the files. The default is false
+//				passphrase = 'passphrase' //Optional. The passphrase for GPG signing'
+//			}
+//			mavenCentralSync {
+//				sync = false //Optional (true by default). Determines whether to sync the version to Maven Central.
+//				user = 'userToken' //OSS user token
+//				password = 'paasword' //OSS user password
+//				close = '1' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+//			}
+		}
+	}
+}
+
+publishToMavenLocal.dependsOn(build, generatePomFileForMavenJavaPublication)
+bintrayUpload.dependsOn(build, generatePomFileForMavenJavaPublication)
+

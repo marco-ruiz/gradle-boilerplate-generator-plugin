@@ -1,0 +1,97 @@
+bindings:
+    resourceName: "MyResource"
+
+translations:
+    - templateFilename: "build.gradle"
+      type: "project"
+      filename: "new-build.gradle"
+      required: true
+      appendixSnippet: true
+
+    - templateFilename: "Entity.java"
+      type: "source"
+      filename: "${resourceName}Entity.java"
+      subDir: ""
+      subPackage: "model"
+      required: true
+      appendixSnippet: false
+
+    - templateFilename: "QueryParameters.java"
+      type: "source"
+      filename: "${resourceName}QueryParameters.java"
+      subPackage: "model"
+
+    - templateFilename: "Repository.java"
+      type: "source"
+      filename: "${resourceName}Repository.java"
+      subPackage: "repo"
+
+    - templateFilename: "RepositoryCustom.java"
+      type: "source"
+      filename: "${resourceName}RepositoryCustom.java"
+      subPackage: "repo"
+
+    - templateFilename: "RepositoryImpl.java"
+      type: "source"
+      filename: "${resourceName}RepositoryImpl.java"
+      subPackage: "repo"
+
+    - templateFilename: "Controller.java"
+      type: "source"
+      filename: "${resourceName}Controller.java"
+      subPackage: "web"
+
+    - templateFilename: "DTO.java"
+      type: "source"
+      filename: "${resourceName}DTO.java"
+      subPackage: "web"
+
+    - templateFilename: "Resource.java"
+      type: "source"
+      filename: "${resourceName}Resource.java"
+      subPackage: "web.resource"
+
+    - templateFilename: "ResourceAssembler.java"
+      type: "source"
+      filename: "${resourceName}ResourceAssembler.java"
+      subPackage: "web.resource"
+
+# Optional generations
+
+    - templateFilename: "AppService.java"
+      type: "source"
+      filename: "AppService.java"
+      subPackage: "service"
+      required: false
+      
+    - templateFilename: "AppServiceImpl.java"
+      type: "source"
+      filename: "AppServiceImpl.java"
+      subPackage: "service"
+      required: false
+      
+    - templateFilename: "BaseController.java"
+      type: "source"
+      filename: "BaseController.java"
+      subPackage: "web"
+      required: false
+      
+    - templateFilename: "PageOfCollection.java"
+      type: "source"
+      filename: "PageOfCollection.java"
+      subPackage: "web"
+      required: false
+
+    - templateFilename: "LinkUtils.java"
+      type: "source"
+      filename: "LinkUtils.java"
+      subPackage: "web.resource"
+      required: false
+      
+    - templateFilename: "RootResourceProcessor.java"
+      type: "source"
+      filename: "RootResourceProcessor.java"
+      subPackage: "web.resource"
+      required: false
+      
+      

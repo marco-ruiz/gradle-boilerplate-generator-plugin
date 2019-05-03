@@ -1,0 +1,50 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+.idea
+build
+out
+/.gradle/
+/bin/
+
+# Android built artifacts
+*.apk
+*.ap_
+*.dex
+
+# Java build artifacts class files
+*.class
+
+# other generated files
+bin/
+gen/
+build*/
+target/
+.README.md.html
+src/generated
+
+# local configuration file (for Android sdk path, etc)
+local.properties
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.settings/
+.classpath
+.project
+
+# Android Studio
+*.iml
+*.ipr
+*.iws
+.idea
+.gradle/
+
+#NDK
+obj/
+
+tmp/
+
+# Javascript
+node_modules/
+public/dist/
+.env*.local

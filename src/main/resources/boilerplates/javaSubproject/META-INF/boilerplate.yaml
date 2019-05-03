@@ -1,0 +1,25 @@
+bindings:
+    subProjectName: "common"
+
+translations:
+    - type: "project"
+      filename: "java"
+      subDir: "${subProjectName}/src/main"
+      required: true
+
+    - type: "project"
+      filename: "java"
+      subDir: "${subProjectName}/src/test"
+      required: true
+
+    - templateFilename: "subproject.gradle"
+      type: "project"
+      filename: "${subProjectName}.gradle"
+      subDir: "${subProjectName}"
+      required: true
+      
+    - templateFilename: "java.gradle"
+      type: "project"
+      filename: "java.gradle"
+      required: false
+      
