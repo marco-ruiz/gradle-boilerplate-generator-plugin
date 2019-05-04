@@ -2,13 +2,13 @@ bindings:
     resourceName: "MyResource"
 
 translations:
-    - templateFilename: "build.gradle"
+    - templateFilename: "build.gradle.ftl"
       type: "project"
       filename: "new-build.gradle"
       required: true
       appendixSnippet: true
 
-    - templateFilename: "Entity.java"
+    - templateFilename: "Entity.java.ftl"
       type: "source"
       filename: "${resourceName}Entity.java"
       subDir: ""
@@ -16,79 +16,79 @@ translations:
       required: true
       appendixSnippet: false
 
-    - templateFilename: "QueryParameters.java"
+    - templateFilename: "QueryParameters.java.ftl"
       type: "source"
       filename: "${resourceName}QueryParameters.java"
       subPackage: "model"
 
-    - templateFilename: "Repository.java"
+    - templateFilename: "Repository.java.ftl"
       type: "source"
       filename: "${resourceName}Repository.java"
       subPackage: "repo"
 
-    - templateFilename: "RepositoryCustom.java"
+    - templateFilename: "RepositoryCustom.java.ftl"
       type: "source"
       filename: "${resourceName}RepositoryCustom.java"
       subPackage: "repo"
 
-    - templateFilename: "RepositoryImpl.java"
+    - templateFilename: "RepositoryImpl.java.ftl"
       type: "source"
       filename: "${resourceName}RepositoryImpl.java"
       subPackage: "repo"
 
-    - templateFilename: "Controller.java"
+    - templateFilename: "Controller.java.ftl"
       type: "source"
       filename: "${resourceName}Controller.java"
       subPackage: "web"
 
-    - templateFilename: "DTO.java"
+    - templateFilename: "DTO.java.ftl"
       type: "source"
       filename: "${resourceName}DTO.java"
       subPackage: "web"
 
-    - templateFilename: "Resource.java"
+    - templateFilename: "Resource.java.ftl"
       type: "source"
       filename: "${resourceName}Resource.java"
       subPackage: "web.resource"
 
-    - templateFilename: "ResourceAssembler.java"
+    - templateFilename: "ResourceAssembler.java.ftl"
       type: "source"
       filename: "${resourceName}ResourceAssembler.java"
       subPackage: "web.resource"
 
 # Optional generations
 
-    - templateFilename: "AppService.java"
+    - templateFilename: "AppService.java.ftl"
       type: "source"
       filename: "AppService.java"
       subPackage: "service"
       required: false
       
-    - templateFilename: "AppServiceImpl.java"
+    - templateFilename: "AppServiceImpl.java.ftl"
       type: "source"
       filename: "AppServiceImpl.java"
       subPackage: "service"
       required: false
       
-    - templateFilename: "BaseController.java"
+    - templateFilename: "BaseController.java.ftl"
       type: "source"
       filename: "BaseController.java"
       subPackage: "web"
       required: false
       
-    - templateFilename: "PageOfCollection.java"
+    - templateFilename: "PageOfCollection.java.ftl"
       type: "source"
       filename: "PageOfCollection.java"
       subPackage: "web"
       required: false
 
-    - templateFilename: "LinkUtils.java"
+    - templateFilename: "LinkUtils.java.ftl"
       type: "source"
       filename: "LinkUtils.java"
       subPackage: "web.resource"
       required: false
       
-    - templateFilename: "RootResourceProcessor.java"
+    - templateFilename: "RootResourceProcessor.java.ftl"
       type: "source"
       filename: "RootResourceProcessor.java"
       subPackage: "web.resource"

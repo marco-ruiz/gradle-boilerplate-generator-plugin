@@ -12,13 +12,13 @@ translations:
       subDir: "${subProjectName}"
       required: true
 
-    - templateFilename: "subproject.gradle"
+    - templateFilename: "subproject.gradle.ftl"
       type: "project"
       filename: "${subProjectName}.gradle"
       subDir: "${subProjectName}"
       required: true
       
-    - templateFilename: "js.gradle"
+    - templateFilename: "js.gradle.ftl"
       type: "project"
       filename: "js.gradle"
       required: false
