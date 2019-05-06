@@ -48,11 +48,9 @@ class GeneratorPlugin implements Plugin<Project> {
 			project.task("boilerplate${boilerplateName.capitalize()}", type: GenerateBoilerplateTask) {
 				boilerplateBundle = pluginBundle
 				boilerplateSubDir = getStandardBoilerplateSubDir("${boilerplateName}/")
-				println boilerplateSubDir
-				projectDir = project.projectDir
-				
-				srcDir = project.sourceSets.main.java.srcDirs.first()
-				rootPackage = 'microservice'
+
+				defaultDataModel.projectDir = project.projectDir
+				defaultDataModel.srcDir = project.sourceSets.main.java.srcDirs.first()
 			}
 		}
 	}

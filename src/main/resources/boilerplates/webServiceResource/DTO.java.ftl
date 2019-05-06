@@ -18,7 +18,7 @@ package ${fullPackage};
 
 import java.time.Instant;
 
-import ${rootPackage}.model.${resourceName}Entity;
+import ${packagePrefix}model.${resourceName}Entity;
 
 public class ${resourceName}DTO {
 

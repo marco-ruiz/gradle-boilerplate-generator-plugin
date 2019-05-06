@@ -22,7 +22,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;
 
-import ${rootPackage}.model.${resourceName}Entity;
+import ${packagePrefix}model.${resourceName}Entity;
 
 @Relation(value = ${resourceName}Resource.REL_ITEM, collectionRelation = ${resourceName}Resource.REL_COL)
 public class ${resourceName}Resource extends ResourceSupport {

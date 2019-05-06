@@ -26,7 +26,7 @@ import org.springframework.http.ResponseEntity;
 
 public class BaseController {
 
-	@Value("${server.contextPath}")
+	@Value("${r"${server.contextPath}"}")
 	protected String contextPath;
 
 	/**

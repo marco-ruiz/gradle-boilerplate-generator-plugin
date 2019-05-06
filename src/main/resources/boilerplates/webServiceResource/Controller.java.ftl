@@ -40,13 +40,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ${rootPackage}.model.${resourceName}Entity;
-import ${rootPackage}.model.${resourceName}QueryParameters;
-import ${rootPackage}.repo.${resourceName}Repository;
-import ${rootPackage}.service.AppService;
-import ${rootPackage}.web.resource.LinkUtils;
-import ${rootPackage}.web.resource.${resourceName}Resource;
-import ${rootPackage}.web.resource.${resourceName}ResourceAssembler;
+import ${packagePrefix}model.${resourceName}Entity;
+import ${packagePrefix}model.${resourceName}QueryParameters;
+import ${packagePrefix}repo.${resourceName}Repository;
+import ${packagePrefix}service.AppService;
+import ${packagePrefix}web.resource.LinkUtils;
+import ${packagePrefix}web.resource.${resourceName}Resource;
+import ${packagePrefix}web.resource.${resourceName}ResourceAssembler;
 
 @RestController
 @RequestMapping(value = "/" + ${resourceName}Resource.REL_COL, produces = MediaTypes.HAL_JSON_VALUE)

@@ -10,7 +10,7 @@ buildscript {
 	}
 }
 
-apply plugin: java
+apply plugin: 'java'
 apply plugin: 'eclipse'
 eclipse.classpath.downloadJavadoc = true
 
@@ -39,5 +39,5 @@ defaultTasks 'build'
 wrapper {
 	description "Regenerates the Gradle Wrapper files"
 	gradleVersion = '5.4'
-	distributionUrl = "http://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
+	distributionUrl = "http://services.gradle.org/distributions/gradle-${r"${gradleVersion}"}-all.zip"
 }

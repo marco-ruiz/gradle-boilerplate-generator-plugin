@@ -18,8 +18,8 @@ package ${fullPackage};
 
 import java.util.List;
 
-import ${rootPackage}.model.${resourceName}Entity;
-import ${rootPackage}.model.${resourceName}QueryParameters;
+import ${packagePrefix}model.${resourceName}Entity;
+import ${packagePrefix}model.${resourceName}QueryParameters;
 
 public interface ${resourceName}RepositoryCustom {
 

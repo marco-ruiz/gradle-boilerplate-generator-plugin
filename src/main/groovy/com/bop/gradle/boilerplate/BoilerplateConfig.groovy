@@ -16,8 +16,7 @@
 
 package com.bop.gradle.boilerplate
 
-import java.nio.file.Path
-import java.nio.file.Paths
+import java.util.regex.Pattern
 
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.constructor.Constructor
@@ -30,45 +29,75 @@ import groovy.transform.ToString
 @ToString
 class BoilerplateConfig {
 
-	Map bindings
-	List<TranslationConfig> translations
+	Map dataModel
+	FileOutputs fileOutputs
 	
 	static BoilerplateConfig read(File yamlFile) {
 		InputStream input = new FileInputStream(yamlFile);
 		Yaml yaml = new Yaml(new Constructor(BoilerplateConfig))
-		yaml.loadAs(input, BoilerplateConfig)
+		BoilerplateConfig result = yaml.loadAs(input, BoilerplateConfig)
+		result.fileOutputs.postConstructSetup()
+		return result
+	}
+}
+
+class FileOutputs {
+	List<FileDescriptor> files = []
+	List<ClassDescriptor> classes = []
+	List<FileDescriptor> directories = [], packages = []
+	
+	void postConstructSetup() {
+		files.each 			{ it.postConstructSetup(false, false) }
+		directories.each 	{ it.postConstructSetup(false, true) }
+		classes.each 		{ it.postConstructSetup(true, false) }
+		packages.each 		{ it.postConstructSetup(true, true) }
+	}
+	
+	List<FileDescriptor> getAll() {
+		(files + classes + directories + packages).findAll { it }
 	}
 }
 
 @ToString
-class TranslationConfig {
-	
-	private static final String TRANSLATION_TYPE_SOURCE = "source"
-	private static final String TRANSLATION_TYPE_PROJECT = "project"
-	
-	String templateFilename
-	String type
-	String filename
-	String subDir = ""
-	String subPackage
-	boolean required = true
-	boolean appendixSnippet = false
+class FileDescriptor {
 
-	boolean isDir() {
-		templateFilename == null || templateFilename.isEmpty()
+	private static final String PACKAGE_SEPARATOR = '.';
+	private static final String FILE_PATH_SEPARATOR = '/';
+
+	static String[] getPathBranches(String childPath, String pathSeparator = FILE_PATH_SEPARATOR) {
+		getPathBranches(childPath, false)
 	}
 	
-	boolean isSourceFile() {
-		type == TRANSLATION_TYPE_SOURCE
+	static String[] getPathBranches(String childPath, boolean isSource) {
+		childPath.split(Pattern.quote(isSource ? PACKAGE_SEPARATOR : FILE_PATH_SEPARATOR))
+	}
+
+	boolean source, directory
+	String templatePath, outputPath
+	boolean reusable = false
+	boolean snippet = false
+	String outputExtension = ''
+	
+	void postConstructSetup(boolean isSource, boolean isDirectory) {
+		source = isSource
+		directory = isDirectory
+		if (outputExtension && !outputExtension.startsWith('.'))
+			outputExtension = '.' + outputExtension
 	}
 	
-	boolean isGeneratable() {
-		dir || !required || appendixSnippet
+	String[] getTemplatePathBranches() {
+		getPathBranches(templatePath)
 	}
 	
-	List<String> getSubDirBranches() {
-		Path all = Paths.get(subDir)
-		int numBranches = all.getNameCount()
-		numBranches < 2 ? [subDir] : (0..<numBranches).collect { all.getName(it).toString() }
+	String[] getTranslatedOutputPathBranches(String translatedOutputPath) {
+		String[] result = getPathBranches(translatedOutputPath, source)
+		result[-1] += outputExtension
+		return result
 	}
 }
+
+class ClassDescriptor extends FileDescriptor {
+
+	ClassDescriptor() { outputExtension = 'java' }
+}
+

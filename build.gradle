@@ -7,7 +7,6 @@ buildscript {
 }
 
 plugins {
-//	id 'java'
 	id 'groovy'
 	id 'java-gradle-plugin'
 	id 'eclipse'
@@ -25,16 +24,8 @@ repositories {
 
 dependencies {
 	implementation localGroovy()
-//	implementation gradleApi()
+	implementation 'org.freemarker:freemarker:2.3.28'
 	implementation 'org.yaml:snakeyaml:1.24'
-}
-
-sourceSets {
-	main {
-		java { srcDirs = [] }
-		groovy { srcDirs = ["src/main/java", "src/main/groovy"] }
-		resources { srcDirs = ["src/main/resources"] }
-	}
 }
 
 gradlePlugin {
@@ -64,7 +55,7 @@ artifacts {
 }
 
 group = 'com.bop'
-version = '0.1.0'
+version = '1.0.0'
 
 def userId = 'marco-ruiz'
 def gitUrl = "https://github.com/${userId}/${project.name}"
@@ -75,7 +66,7 @@ def pomConfig = {
 		license {
 			name "The Apache Software License, Version 2.0"
 			url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-//			distribution "repo"
+			distribution "repo"
 		}
 	}
 	developers {
@@ -100,11 +91,7 @@ publishing {
 			artifactId project.name
 			version project.version
 
-			if (plugins.hasPlugin('war')) {
-				from components.web
-			} else {
-				from components.java
-			}
+			from(plugins.hasPlugin('war') ? components.web : components.java)
 
 			artifact sourcesJar
 			artifact javadocJar
@@ -163,6 +150,7 @@ bintray {
 	}
 }
 
-publishToMavenLocal.dependsOn(build, generatePomFileForMavenJavaPublication)
-bintrayUpload.dependsOn(build, generatePomFileForMavenJavaPublication)
+build.dependsOn(generatePomFileForMavenJavaPublication)
+publishToMavenLocal.dependsOn(build)
+bintrayUpload.dependsOn(build)
 

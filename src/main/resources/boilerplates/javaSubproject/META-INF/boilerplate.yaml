@@ -1,25 +1,20 @@
-bindings:
+dataModel:
     subProjectName: "common"
 
-translations:
-    - type: "project"
-      filename: "java"
-      subDir: "${subProjectName}/src/main"
-      required: true
+fileOutputs:
+    files:
+        - templatePath: "subproject.gradle.ftl"
+          outputPath: "${subProjectName}/${subProjectName}.gradle"
 
-    - type: "project"
-      filename: "java"
-      subDir: "${subProjectName}/src/test"
-      required: true
+        - templatePath: "java.gradle.ftl"
+          outputPath: "java.gradle"
+          reusable: true
 
-    - templateFilename: "subproject.gradle.ftl"
-      type: "project"
-      filename: "${subProjectName}.gradle"
-      subDir: "${subProjectName}"
-      required: true
-      
-    - templateFilename: "java.gradle.ftl"
-      type: "project"
-      filename: "java.gradle"
-      required: false
+    directories:
+        - outputPath: "${subProjectName}/src/main/java"
+        - outputPath: "${subProjectName}/src/test/java"
+    
+    classes:
+          
+    packages:
       

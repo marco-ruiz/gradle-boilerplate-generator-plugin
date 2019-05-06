@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.webmvc.RepositoryLinksResource;
 import org.springframework.hateoas.ResourceProcessor;
 
-import ${rootPackage}.web.${resourceName}Controller;
+import ${packagePrefix}web.${resourceName}Controller;
 
 @Configuration
 public class RootResourceProcessor implements ResourceProcessor<RepositoryLinksResource> {

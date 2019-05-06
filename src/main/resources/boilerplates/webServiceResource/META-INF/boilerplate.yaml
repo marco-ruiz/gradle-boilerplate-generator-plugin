@@ -1,97 +1,59 @@
-bindings:
+dataModel:
     resourceName: "MyResource"
+    packagePrefix: ""
 
-translations:
-    - templateFilename: "build.gradle.ftl"
-      type: "project"
-      filename: "new-build.gradle"
-      required: true
-      appendixSnippet: true
+fileOutputs:
+    classes:
+        - templatePath: "Entity.java.ftl"
+          outputPath: "${packagePrefix}model.${resourceName}Entity"
+          
+        - templatePath: "QueryParameters.java.ftl"
+          outputPath: "${packagePrefix}model.${resourceName}QueryParameters"
+          
+        - templatePath: "Repository.java.ftl"
+          outputPath: "${packagePrefix}repo.${resourceName}Repository"
 
-    - templateFilename: "Entity.java.ftl"
-      type: "source"
-      filename: "${resourceName}Entity.java"
-      subDir: ""
-      subPackage: "model"
-      required: true
-      appendixSnippet: false
+        - templatePath: "RepositoryCustom.java.ftl"
+          outputPath: "${packagePrefix}repo.${resourceName}RepositoryCustom"
 
-    - templateFilename: "QueryParameters.java.ftl"
-      type: "source"
-      filename: "${resourceName}QueryParameters.java"
-      subPackage: "model"
+        - templatePath: "RepositoryImpl.java.ftl"
+          outputPath: "${packagePrefix}repo.${resourceName}RepositoryImpl"
 
-    - templateFilename: "Repository.java.ftl"
-      type: "source"
-      filename: "${resourceName}Repository.java"
-      subPackage: "repo"
+        - templatePath: "Controller.java.ftl"
+          outputPath: "${packagePrefix}web.${resourceName}Controller"
 
-    - templateFilename: "RepositoryCustom.java.ftl"
-      type: "source"
-      filename: "${resourceName}RepositoryCustom.java"
-      subPackage: "repo"
+        - templatePath: "DTO.java.ftl"
+          outputPath: "${packagePrefix}web.${resourceName}DTO"
 
-    - templateFilename: "RepositoryImpl.java.ftl"
-      type: "source"
-      filename: "${resourceName}RepositoryImpl.java"
-      subPackage: "repo"
+        - templatePath: "Resource.java.ftl"
+          outputPath: "${packagePrefix}web.resource.${resourceName}Resource"
 
-    - templateFilename: "Controller.java.ftl"
-      type: "source"
-      filename: "${resourceName}Controller.java"
-      subPackage: "web"
+        - templatePath: "ResourceAssembler.java.ftl"
+          outputPath: "${packagePrefix}web.resource.${resourceName}ResourceAssembler"
 
-    - templateFilename: "DTO.java.ftl"
-      type: "source"
-      filename: "${resourceName}DTO.java"
-      subPackage: "web"
+# Optional files
 
-    - templateFilename: "Resource.java.ftl"
-      type: "source"
-      filename: "${resourceName}Resource.java"
-      subPackage: "web.resource"
-
-    - templateFilename: "ResourceAssembler.java.ftl"
-      type: "source"
-      filename: "${resourceName}ResourceAssembler.java"
-      subPackage: "web.resource"
-
-# Optional generations
-
-    - templateFilename: "AppService.java.ftl"
-      type: "source"
-      filename: "AppService.java"
-      subPackage: "service"
-      required: false
+        - templatePath: "AppService.java.ftl"
+          outputPath: "${packagePrefix}service.AppService"
+          reusable: true
       
-    - templateFilename: "AppServiceImpl.java.ftl"
-      type: "source"
-      filename: "AppServiceImpl.java"
-      subPackage: "service"
-      required: false
+        - templatePath: "AppServiceImpl.java.ftl"
+          outputPath: "${packagePrefix}service.AppServiceImpl"
+          reusable: true
       
-    - templateFilename: "BaseController.java.ftl"
-      type: "source"
-      filename: "BaseController.java"
-      subPackage: "web"
-      required: false
+        - templatePath: "BaseController.java.ftl"
+          outputPath: "${packagePrefix}web.BaseController"
+          reusable: true
       
-    - templateFilename: "PageOfCollection.java.ftl"
-      type: "source"
-      filename: "PageOfCollection.java"
-      subPackage: "web"
-      required: false
+        - templatePath: "PageOfCollection.java.ftl"
+          outputPath: "${packagePrefix}web.PageOfCollection"
+          reusable: true
 
-    - templateFilename: "LinkUtils.java.ftl"
-      type: "source"
-      filename: "LinkUtils.java"
-      subPackage: "web.resource"
-      required: false
+        - templatePath: "LinkUtils.java.ftl"
+          outputPath: "${packagePrefix}web.resource.LinkUtils"
+          reusable: true
       
-    - templateFilename: "RootResourceProcessor.java.ftl"
-      type: "source"
-      filename: "RootResourceProcessor.java"
-      subPackage: "web.resource"
-      required: false
-      
+        - templatePath: "RootResourceProcessor.java.ftl"
+          outputPath: "${packagePrefix}web.resource.RootResourceProcessor"
+          reusable: true
       

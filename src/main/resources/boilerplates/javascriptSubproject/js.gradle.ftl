@@ -56,7 +56,7 @@ task packageNpmApp(type: Zip, dependsOn: npm_run_build) {
 	inputs.files fileTree('build')
     baseName 'npm-app'
     extension 'jar'
-    destinationDir file("${projectDir}/build_packageNpmApp")
+    destinationDir file("${r"${projectDir}"}/build_packageNpmApp")
     from('build') {
         // optional path under which output will be visible in Java classpath, e.g. static resources path
         into 'static'
@@ -80,7 +80,7 @@ artifacts {
 
 assemble.dependsOn packageNpmApp
 /*
-String testsExecutedMarkerName = "${projectDir}/.tests.executed"
+String testsExecutedMarkerName = "${r"${projectDir}"}/.tests.executed"
 
 task test(type: NpmTask) {
     dependsOn assemble

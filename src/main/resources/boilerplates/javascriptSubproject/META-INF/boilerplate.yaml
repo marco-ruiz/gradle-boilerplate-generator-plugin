@@ -1,25 +1,21 @@
-bindings:
+dataModel:
     subProjectName: "js"
 
-translations:
-    - type: "project"
-      filename: "src"
-      subDir: "${subProjectName}"
-      required: true
+fileOutputs:
+    files:
+        - templatePath: "subproject.gradle.ftl"
+          outputPath: "${subProjectName}/${subProjectName}.gradle"
 
-    - type: "project"
-      filename: "public"
-      subDir: "${subProjectName}"
-      required: true
+        - templatePath: "js.gradle.ftl"
+          outputPath: "js.gradle"
+          reusable: true
 
-    - templateFilename: "subproject.gradle.ftl"
-      type: "project"
-      filename: "${subProjectName}.gradle"
-      subDir: "${subProjectName}"
-      required: true
+    directories:
+        - outputPath: "${subProjectName}/src"
+        - outputPath: "${subProjectName}/public"
+    
+    classes:
+          
+    packages:
       
-    - templateFilename: "js.gradle.ftl"
-      type: "project"
-      filename: "js.gradle"
-      required: false
-      
+            

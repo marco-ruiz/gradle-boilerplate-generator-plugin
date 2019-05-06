@@ -24,8 +24,8 @@ import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import ${rootPackage}.model.${resourceName}Entity;
-import ${rootPackage}.web.${resourceName}Controller;
+import ${packagePrefix}model.${resourceName}Entity;
+import ${packagePrefix}web.${resourceName}Controller;
 
 @Component
 public class ${resourceName}ResourceAssembler extends ResourceAssemblerSupport<${resourceName}Entity, ResourceSupport> {

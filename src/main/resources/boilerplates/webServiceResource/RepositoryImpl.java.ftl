@@ -25,9 +25,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import ${rootPackage}.model.${resourceName}Entity;
-import ${rootPackage}.model.${resourceName}Entity_;
-import ${rootPackage}.model.${resourceName}QueryParameters;
+import ${packagePrefix}model.${resourceName}Entity;
+import ${packagePrefix}model.${resourceName}Entity_;
+import ${packagePrefix}model.${resourceName}QueryParameters;
 
 public class ${resourceName}RepositoryImpl implements ${resourceName}RepositoryCustom {
 

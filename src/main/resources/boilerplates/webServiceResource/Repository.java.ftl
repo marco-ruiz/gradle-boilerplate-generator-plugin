@@ -19,7 +19,7 @@ package ${fullPackage};
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ${rootPackage}.model.${resourceName}Entity;
+import ${packagePrefix}model.${resourceName}Entity;
 
 @Repository
 public interface ${resourceName}Repository extends JpaRepository<${resourceName}Entity, Long>, ${resourceName}RepositoryCustom {

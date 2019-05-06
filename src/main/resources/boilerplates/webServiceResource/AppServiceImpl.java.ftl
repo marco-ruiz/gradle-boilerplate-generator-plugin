@@ -22,8 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import ${rootPackage}.model.${resourceName}Entity;
-import ${rootPackage}.repo.${resourceName}Repository;
+import ${packagePrefix}model.${resourceName}Entity;
+import ${packagePrefix}repo.${resourceName}Repository;
 
 @Service
 public class AppServiceImpl implements AppService {

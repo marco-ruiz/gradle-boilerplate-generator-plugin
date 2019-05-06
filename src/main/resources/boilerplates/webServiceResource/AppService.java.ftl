@@ -16,7 +16,7 @@
 
 package ${fullPackage};
 
-import ${rootPackage}.model.${resourceName}Entity;
+import ${packagePrefix}model.${resourceName}Entity;
 
 public interface AppService {
 
