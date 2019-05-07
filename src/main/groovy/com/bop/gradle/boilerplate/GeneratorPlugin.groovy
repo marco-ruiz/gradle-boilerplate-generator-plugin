@@ -49,7 +49,7 @@ class GeneratorPlugin implements Plugin<Project> {
 				boilerplateBundle = pluginBundle
 				boilerplateSubDir = getStandardBoilerplateSubDir("${boilerplateName}/")
 
-				defaultDataModel.projectDir = project.projectDir
+				defaultDataModel.project = project
 				defaultDataModel.srcDir = project.sourceSets.main.java.srcDirs.first()
 			}
 		}

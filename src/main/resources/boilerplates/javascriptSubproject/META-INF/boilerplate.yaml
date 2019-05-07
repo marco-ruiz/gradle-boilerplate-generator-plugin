@@ -1,18 +1,19 @@
 dataModel:
     subProjectName: "js"
+    subProjectPrefix: "${project.name}"
 
 fileOutputs:
     files:
         - templatePath: "subproject.gradle.ftl"
-          outputPath: "${subProjectName}/${subProjectName}.gradle"
+          outputPath: "${subProjectPrefix}-${subProjectName}/${subProjectName}.gradle"
 
         - templatePath: "js.gradle.ftl"
           outputPath: "js.gradle"
           reusable: true
 
     directories:
-        - outputPath: "${subProjectName}/src"
-        - outputPath: "${subProjectName}/public"
+        - outputPath: "${subProjectPrefix}-${subProjectName}/src"
+        - outputPath: "${subProjectPrefix}-${subProjectName}/public"
     
     classes:
           

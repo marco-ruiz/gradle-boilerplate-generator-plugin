@@ -33,6 +33,7 @@ class GenerateBoilerplateTask extends DefaultTask {
 	@Input String boilerplateSubDir = ''
 	@Input Map defaultDataModel = [:]
 	@Input Map userDataModel = [:]
+	BoilerplateConfig config
 	
 	GenerateBoilerplateTask() {
 		group = 'Boilerplate Generation'
@@ -43,31 +44,47 @@ class GenerateBoilerplateTask extends DefaultTask {
 	
 	@TaskAction
 	void generateAction() {
-		BoilerplateConfig config = BoilerplateConfig.read(findBundleFile(BUNDLE_CONFIG_PATH))
+		config = BoilerplateConfig.read(findBundleFile(BUNDLE_CONFIG_PATH))
 		
-		Map generatorDataModel = config.dataModel + defaultDataModel + userDataModel
+		Map generatorDataModel = createDataModel()
 		List<FileGenerator> generators = config.fileOutputs.all.collect { 
 			new FileGenerator(it, generatorDataModel) 
 		}
 		
 		// Abort if override error
+		if (!meetRequirements(generators)) 
+			return
+			
+		Map<String, String> templateMappings = generators
+				.collect { it.fileDescriptor.templatePath }
+				.findAll { it }
+				.collectEntries { [ (it) : findBundleFile(it).text ] }
+			
+		FreeMarkerTranslator translatorFiles = new FreeMarkerTranslator(templateMappings)
+		generators.each { it.generateFile(translatorFiles) }
+	}
+	
+	boolean meetRequirements(List<FileGenerator> generators) {
 		List<String> errors = generators.collect { it.requirementsError }
 		boolean failed = errors.find { !it.isEmpty() }
 		
 		if (failed) {
 			println "Unable to satisfy requirements to generate boilerplate:"
-			errors.eachWithIndex { errorMsg, idx -> 
-				if (!errorMsg.isEmpty()) println "[${idx + 1}]: ${errorMsg}" 
+			errors.eachWithIndex { errorMsg, idx ->
+				if (!errorMsg.isEmpty()) println "[${idx + 1}]: ${errorMsg}"
 			}
-		} else {
-			Map<String, String> templateMappings = generators
-					.collect { it.fileDescriptor.templatePath }
-					.findAll { it }
-					.collectEntries { [ (it) : findBundleFile(it).text ] }
-				
-			FreeMarkerTranslator translatorFiles = new FreeMarkerTranslator(templateMappings)
-			generators.each { it.generateFile(translatorFiles) }
 		}
+		return !failed
+	}
+	
+	Map createDataModel() {
+		Map dataModelForBoilerplateBundleConfig = defaultDataModel + userDataModel
+		FreeMarkerTranslator translator = new FreeMarkerTranslator()
+		Map result = [:] 
+		config.dataModel.each { key, value -> 
+			result[key] = translator.translateTemplateString(dataModelForBoilerplateBundleConfig, value) 
+		}
+		return result + dataModelForBoilerplateBundleConfig
 	}
 	
 	File findBundleFile(String fileSubpath) {

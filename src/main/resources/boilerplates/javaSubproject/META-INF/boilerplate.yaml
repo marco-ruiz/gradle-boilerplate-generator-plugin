@@ -1,18 +1,19 @@
 dataModel:
     subProjectName: "common"
+    subProjectPrefix: "${project.name}"
 
 fileOutputs:
     files:
         - templatePath: "subproject.gradle.ftl"
-          outputPath: "${subProjectName}/${subProjectName}.gradle"
+          outputPath: "${subProjectPrefix}-${subProjectName}/${subProjectName}.gradle"
 
         - templatePath: "java.gradle.ftl"
           outputPath: "java.gradle"
           reusable: true
 
     directories:
-        - outputPath: "${subProjectName}/src/main/java"
-        - outputPath: "${subProjectName}/src/test/java"
+        - outputPath: "${subProjectPrefix}-${subProjectName}/src/main/java"
+        - outputPath: "${subProjectPrefix}-${subProjectName}/src/test/java"
     
     classes:
           

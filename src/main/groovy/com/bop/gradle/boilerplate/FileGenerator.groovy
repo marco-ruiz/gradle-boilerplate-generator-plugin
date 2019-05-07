@@ -83,7 +83,7 @@ class FileGenerator {
 	}
 	
 	File resolveFile() {
-		File rootFile = fileDescriptor.source ? dataModel.srcDir : dataModel.projectDir
+		File rootFile = fileDescriptor.source ? dataModel.srcDir : dataModel.project.projectDir
 		String translatedOutputPath = TRANSLATOR_FILENAMES.translateTemplateString(dataModel, fileDescriptor.outputPath)
 		String[] branches = fileDescriptor.getTranslatedOutputPathBranches(translatedOutputPath)
 		Paths.get(rootFile.toString(), branches).toFile()
