@@ -63,13 +63,15 @@ class FileDescriptor {
 
 	private static final String PACKAGE_SEPARATOR = '.';
 	private static final String FILE_PATH_SEPARATOR = '/';
+	private static final String DEFAULT_PACKAGE = 'defaultPackage'
 
 	static String[] getPathBranches(String childPath, String pathSeparator = FILE_PATH_SEPARATOR) {
 		getPathBranches(childPath, false)
 	}
 	
 	static String[] getPathBranches(String childPath, boolean isSource) {
-		childPath.split(Pattern.quote(isSource ? PACKAGE_SEPARATOR : FILE_PATH_SEPARATOR))
+		String[] result = childPath.split(Pattern.quote(isSource ? PACKAGE_SEPARATOR : FILE_PATH_SEPARATOR))
+		return (isSource && result.length < 2) ? [DEFAULT_PACKAGE , *result] : result 
 	}
 
 	boolean source, directory

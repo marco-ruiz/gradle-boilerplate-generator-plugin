@@ -25,14 +25,16 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.impldep.org.bouncycastle.util.encoders.Translator
 
+/**
+ * @author Marco Ruiz
+ */
 class GenerateBoilerplateTask extends DefaultTask {
 
 	private static final String BUNDLE_CONFIG_PATH = "META-INF/boilerplate.yaml"
 	
 	@Input FileTree boilerplateBundle
 	@Input String boilerplateSubDir = ''
-	@Input Map projectDataModel = [:]
-	@Input Map userDataModel = [:]
+	@Input Map taskDataModel = [:]
 	BoilerplateConfig config
 	
 	GenerateBoilerplateTask() {
@@ -46,7 +48,7 @@ class GenerateBoilerplateTask extends DefaultTask {
 	void generateAction() {
 		config = BoilerplateConfig.read(findBundleFile(BUNDLE_CONFIG_PATH))
 		
-		Map generatorDataModel = createDataModel()
+		Map generatorDataModel = createGeneratorDataModel()
 		List<FileGenerator> generators = config.fileOutputs.all.collect { 
 			new FileGenerator(it, generatorDataModel) 
 		}
@@ -58,8 +60,8 @@ class GenerateBoilerplateTask extends DefaultTask {
 		Map<String, String> templateMappings = generators
 				.collect { it.fileDescriptor.templatePath }
 				.findAll { it }
-				.collectEntries { [ (it) : findBundleFile(it).text ] }
-			
+				.collectEntries { [ (it) : findBundleFile(it)?.text] }
+		
 		FreeMarkerTranslator translatorFiles = new FreeMarkerTranslator(templateMappings)
 		generators.each { it.generateFile(translatorFiles) }
 	}
@@ -77,18 +79,21 @@ class GenerateBoilerplateTask extends DefaultTask {
 		return !failed
 	}
 	
-	Map createDataModel() {
-		Map dataModelForBoilerplateBundleConfig = projectDataModel + userDataModel
+	Map createGeneratorDataModel() {
 		FreeMarkerTranslator translator = new FreeMarkerTranslator()
 		Map result = [:] 
 		config.dataModel.each { key, value -> 
-			result[key] = translator.translateTemplateString(dataModelForBoilerplateBundleConfig, value) 
+			result[key] = translator.translateTemplateString(taskDataModel, value) 
 		}
-		return result + dataModelForBoilerplateBundleConfig
+		result += taskDataModel
+		if (!result.srcDirString) 
+			result.srcDirString = result.srcDir?.toString() ?: result.project.sourceSets.main.java.srcDirs.first().toString()
+		return result
 	}
 	
 	File findBundleFile(String fileSubpath) {
-		return boilerplateBundle.matching { include "${boilerplateSubDir}**/${fileSubpath}" }.files.first()
+		Set<File> matchingFiles = boilerplateBundle.matching { include "${boilerplateSubDir}**/${fileSubpath}" }.files
+		return matchingFiles ? matchingFiles.first() : null
 	}
 }
 

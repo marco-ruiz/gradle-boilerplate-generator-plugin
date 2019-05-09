@@ -32,10 +32,6 @@ class GeneratorPlugin implements Plugin<Project> {
 	private static final String BOILERPLATES_ROOT = "boilerplates/"
 	
 	void apply(Project project) {
-		project.configure(project) {
-			//			extensions.create("boilerplates", BoilerplateGeneratorExtension, boilerplates)
-		}
-		
 		FileTree pluginBundle = project.zipTree(PLUGIN_ROOT_URL)
 
 		Set boilerplatesAvailable = []
@@ -49,8 +45,7 @@ class GeneratorPlugin implements Plugin<Project> {
 				boilerplateBundle = pluginBundle
 				boilerplateSubDir = getStandardBoilerplateSubDir("${boilerplateName}/")
 
-				projectDataModel.project = project
-				projectDataModel.srcDir = project.sourceSets.main.java.srcDirs.first().toString()
+				taskDataModel.project = project
 			}
 		}
 	}

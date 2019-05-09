@@ -37,11 +37,11 @@ class FileGenerator {
 		// Augment data model with newly resolved outputFile properties (not available when resolving it)
 		dataModel.outputFile = outputFile
 		if (fileDescriptor.isSource())
-			addClassDetailsToDataModel(outputFile.toString() - dataModel.srcDir)
+			addClassDetailsToDataModel(outputFile.toString() - dataModel.srcDirString)
 	}
 	
 	File resolveFile() {
-		File rootFile = fileDescriptor.source ? dataModel.srcDir : dataModel.project.projectDir
+		File rootFile = fileDescriptor.source ? new File(dataModel.srcDirString) : dataModel.project.projectDir
 		String translatedOutputPath = TRANSLATOR_FILENAMES.translateTemplateString(dataModel, fileDescriptor.outputPath)
 		String[] branches = fileDescriptor.getTranslatedOutputPathBranches(translatedOutputPath)
 		Paths.get(rootFile.toString(), branches).toFile()
@@ -55,7 +55,7 @@ class FileGenerator {
 		if (!fileDescriptor.isDirectory()) {
 			String classFileName = packageBranches[-1]
 			className = classFileName[0..<classFileName.lastIndexOf('.')]
-			packageBranches = packageBranches[(0..-2)]
+			packageBranches = packageBranches.length < 2 ? [] : packageBranches[(0..-2)]
 		}
 		
 		dataModel.fullPackage = packageBranches.join('.')

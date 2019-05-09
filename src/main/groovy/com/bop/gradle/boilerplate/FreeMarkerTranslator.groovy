@@ -33,7 +33,7 @@ class FreeMarkerTranslator {
 	FreeMarkerTranslator(Map<String, String> mappings) {
 		if (mappings) {
 			StringTemplateLoader templateLoader = new StringTemplateLoader();
-			mappings.each { key, value ->  templateLoader.putTemplate(key, value)}
+			mappings.each { key, value ->  templateLoader.putTemplate(key, value ?: '')}
 			cfg.setTemplateLoader(templateLoader)
 		}
 		
