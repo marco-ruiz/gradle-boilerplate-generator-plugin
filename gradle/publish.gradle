@@ -35,8 +35,11 @@ artifacts {
 // SCRIPT VARIABLES
 //====================
 
-//def bintrayUser=
-//def bintrayKey=
+def buildAuth = [
+	bintrayUser: hasProperty('bintrayUser') ? bintrayUser : System.env.BINTRAY_USER, 
+	bintrayKey: hasProperty('bintrayKey') ? bintrayKey : System.env.BINTRAY_KEY, 
+	signingPassword: hasProperty('signing.password') ? getProperty('signing.password') : System.env.SIGNING_PASSWORD
+]
 
 def userName = 'Marco Ruiz'
 def userEmail = 'marco.a.ruiz@gmail.com'
@@ -98,8 +101,8 @@ publishing {
 }
 
 bintray {
-	user = bintrayUser
-	key = bintrayKey
+	user = buildAuth.bintrayUser
+	key = buildAuth.bintrayKey
 
 	publications = ['MyPublication'] 	// When uploading Maven-based publication files
 	publish = true
@@ -126,7 +129,7 @@ bintray {
 			
 			gpg {
 				sign = true 
-				passphrase = getProperty('signing.password')
+				passphrase = buildAuth.signingPassword
 			}
 			mavenCentralSync {
 				sync = false 
