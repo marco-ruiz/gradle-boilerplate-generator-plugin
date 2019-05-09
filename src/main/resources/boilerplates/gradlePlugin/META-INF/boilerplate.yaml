@@ -1,0 +1,27 @@
+dataModel:
+    srcDirString: "${project.projectDir}/buildSrc/src/main/groovy"
+    pluginClassName: "MyPlugin"
+    extensionName: "myPlugin"
+
+fileOutputs:
+    directories:
+        - outputPath: "buildSrc/src/main/groovy"
+        - outputPath: "buildSrc/src/test/groovy"
+    
+    files:
+        - templatePath: "build.gradle.ftl"
+          outputPath: "buildSrc/build.gradle"
+
+    classes:
+        - templatePath: "Plugin.groovy.ftl"
+          outputPath: "${pluginClassName}"
+          outputExtension: "groovy"
+
+        - templatePath: "PluginTask.groovy.ftl"
+          outputPath: "${pluginClassName}Task"
+          outputExtension: "groovy"
+
+        - templatePath: "PluginExtension.groovy.ftl"
+          outputPath: "${pluginClassName}Extension"
+          outputExtension: "groovy"
+

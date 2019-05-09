@@ -1,0 +1,4 @@
+package ${fullPackage}
+
+class ${className} {
+}
