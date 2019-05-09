@@ -1,0 +1,143 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		jcenter()
+		mavenCentral()
+		maven { url "https://plugins.gradle.org/m2/" }	// Standard gradle plugins repo
+	}
+	dependencies { 
+		classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
+	}
+}
+
+apply plugin: 'maven-publish'
+apply plugin: com.jfrog.bintray.gradle.BintrayPlugin
+//apply plugin: 'signing'
+
+// custom tasks for creating source/javadoc jars
+task sourcesJar(type: Jar, dependsOn: classes) {
+	archiveClassifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	archiveClassifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+// add javadoc/source jar tasks as artifacts
+artifacts {
+	archives sourcesJar, javadocJar
+}
+
+//====================
+// SCRIPT VARIABLES
+//====================
+
+//def bintrayUser=
+//def bintrayKey=
+
+def userName = 'Marco Ruiz'
+def userEmail = 'marco.a.ruiz@gmail.com'
+
+def scmHost = 'github.com'
+def scmHostUserId = 'marco-ruiz'
+
+def scmHostUrl = "https://${scmHost}"
+def scmRepo = "${scmHostUserId}/${project.name}"
+def scmUrl = "${scmHostUrl}/${scmRepo}"
+def scmDevUrl = "${scmHostUrl}/${scmHostUserId}"
+
+//====================
+// PUBLISHING
+//====================
+
+publishing {
+	publications {
+		MyPublication(MavenPublication) {
+			groupId = project.group
+			artifactId = project.name
+			version = project.version
+
+			from(plugins.hasPlugin('war') ? components.web : components.java)
+
+			artifact sourcesJar
+			artifact javadocJar
+
+			pom {
+				packaging = 'jar'
+				
+				name = project.name
+				description = project.description
+				url = scmUrl
+				
+				licenses {
+					license {
+						name = "The Apache Software License, Version 2.0"
+						url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+						distribution = "repo"
+					}
+				}
+				developers {
+					developer {
+						id = scmHostUserId
+						name = userName
+						email = userEmail
+					}
+				}
+				
+				scm {
+					connection = "scm:git:${scmUrl}"
+					developerConnection = "scm:git:${scmDevUrl}"
+					url = scmUrl
+				}
+			}
+		}
+	}
+}
+
+bintray {
+	user = bintrayUser
+	key = bintrayKey
+
+	publications = ['MyPublication'] 	// When uploading Maven-based publication files
+	publish = true
+	
+	pkg {
+		userOrg = scmHostUserId
+		repo = 'mavenRepo'
+		name = "${project.group}.${project.name}"
+		desc = project.description
+		
+		websiteUrl = scmUrl
+		vcsUrl = scmUrl
+		issueTrackerUrl = "${scmUrl}/issues"
+		licenses = ['Apache-2.0']
+
+		githubRepo = scmRepo
+		githubReleaseNotesFile = 'README.md'
+
+		version {
+			name = project.version
+			released = new Date()
+			desc = "${project.name} version ${project.version}"
+			vcsTag = project.version
+			
+			gpg {
+				sign = true 
+				passphrase = getProperty('signing.password')
+			}
+			mavenCentralSync {
+				sync = false 
+				user = 'userToken'
+				password = 'paasword'
+				close = '1'
+			}
+		}
+	}
+}
+
+build.dependsOn(generatePomFileForMyPublicationPublication)
+publishToMavenLocal.dependsOn(build)
+bintrayUpload.dependsOn(build)

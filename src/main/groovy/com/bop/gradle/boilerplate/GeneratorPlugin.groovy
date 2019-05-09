@@ -28,8 +28,8 @@ import org.gradle.api.file.FileTreeElement
  */
 class GeneratorPlugin implements Plugin<Project> {
 	
-	private final String PLUGIN_ROOT_URL = GeneratorPlugin.protectionDomain.codesource.location.toExternalForm()
-	private final String BOILERPLATES_ROOT = "boilerplates/"
+	private static final String PLUGIN_ROOT_URL = GeneratorPlugin.protectionDomain.codesource.location.toExternalForm()
+	private static final String BOILERPLATES_ROOT = "boilerplates/"
 	
 	void apply(Project project) {
 		project.configure(project) {
@@ -49,8 +49,8 @@ class GeneratorPlugin implements Plugin<Project> {
 				boilerplateBundle = pluginBundle
 				boilerplateSubDir = getStandardBoilerplateSubDir("${boilerplateName}/")
 
-				defaultDataModel.project = project
-				defaultDataModel.srcDir = project.sourceSets.main.java.srcDirs.first()
+				projectDataModel.project = project
+				projectDataModel.srcDir = project.sourceSets.main.java.srcDirs.first().toString()
 			}
 		}
 	}

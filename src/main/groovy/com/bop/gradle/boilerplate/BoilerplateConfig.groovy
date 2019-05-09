@@ -54,7 +54,7 @@ class FileOutputs {
 	}
 	
 	List<FileDescriptor> getAll() {
-		(files + classes + directories + packages).findAll { it }
+		(directories + packages + files + classes).findAll { it }
 	}
 }
 

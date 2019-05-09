@@ -31,7 +31,7 @@ class GenerateBoilerplateTask extends DefaultTask {
 	
 	@Input FileTree boilerplateBundle
 	@Input String boilerplateSubDir = ''
-	@Input Map defaultDataModel = [:]
+	@Input Map projectDataModel = [:]
 	@Input Map userDataModel = [:]
 	BoilerplateConfig config
 	
@@ -78,7 +78,7 @@ class GenerateBoilerplateTask extends DefaultTask {
 	}
 	
 	Map createDataModel() {
-		Map dataModelForBoilerplateBundleConfig = defaultDataModel + userDataModel
+		Map dataModelForBoilerplateBundleConfig = projectDataModel + userDataModel
 		FreeMarkerTranslator translator = new FreeMarkerTranslator()
 		Map result = [:] 
 		config.dataModel.each { key, value -> 

@@ -40,6 +40,13 @@ class FileGenerator {
 			addClassDetailsToDataModel(outputFile.toString() - dataModel.srcDir)
 	}
 	
+	File resolveFile() {
+		File rootFile = fileDescriptor.source ? dataModel.srcDir : dataModel.project.projectDir
+		String translatedOutputPath = TRANSLATOR_FILENAMES.translateTemplateString(dataModel, fileDescriptor.outputPath)
+		String[] branches = fileDescriptor.getTranslatedOutputPathBranches(translatedOutputPath)
+		Paths.get(rootFile.toString(), branches).toFile()
+	}
+
 	void addClassDetailsToDataModel(String classFilePath) {
 		String className = ''
 		String[] packageBranches = FileDescriptor.getPathBranches(classFilePath, File.separator)
@@ -56,9 +63,8 @@ class FileGenerator {
 	}
 	
 	String getRequirementsError() {
-		String id = outputFile
 		if (outputFile.getParentFile().isFile())
-			return "Parent of ${id} exists and is a file; not a directory"
+			return "Parent of ${outputFile} exists and is a file; not a directory"
 			
 		if (fileDescriptor.reusable)
 			return "" // Disposable
@@ -70,23 +76,16 @@ class FileGenerator {
 
 		// Check override violation
 		if (!fileDescriptor.snippet && !fileDescriptor.isDirectory())
-			return "${id} exists and is not optional, nor a snippet, nor a directory"
+			return "${outputFile} exists and is not optional, nor a snippet, nor a directory"
 
 		// Check directory/file mismatch
 		if (outputFile.isDirectory() && !fileDescriptor.isDirectory())
-			return "${id} exists and it is not a file; but a directory and ${id} is a file to generate"
+			return "Trying to generate file ${outputFile}; but it exists and it is not a file; but a directory"
 		
 		if (!outputFile.isDirectory() && fileDescriptor.isDirectory())
-			return "${id} exists and it is not a directory; but a file and ${id} is a directory to generate"
+			return "Trying to create directory ${outputFile}; but it exists and it is not a directory; but a file"
 
 		return ""
-	}
-	
-	File resolveFile() {
-		File rootFile = fileDescriptor.source ? dataModel.srcDir : dataModel.project.projectDir
-		String translatedOutputPath = TRANSLATOR_FILENAMES.translateTemplateString(dataModel, fileDescriptor.outputPath)
-		String[] branches = fileDescriptor.getTranslatedOutputPathBranches(translatedOutputPath)
-		Paths.get(rootFile.toString(), branches).toFile()
 	}
 	
 	void generateFile(FreeMarkerTranslator translatorFiles) {
