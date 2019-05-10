@@ -9,6 +9,47 @@ This gradle plugin allows you to generate customizable boilerplate files and dir
 
 Once such definition is avaiable to the plugin, the plugin can generate the appropriate files and directories by applying the user's data model to the boilerplate definition.
 
+## Quick Start Guide
+
+Create a new gradle project with the following `build.gradle` file:
+
+```gradle
+buildscript {
+  repositories {
+    jcenter()
+    maven { url "https://dl.bintray.com/marco-ruiz/mavenRepo" }
+  }
+  dependencies {
+    classpath 'com.bop:gradle-boilerplate-generator-plugin:1.0.2'
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.bop.gradle-boilerplate-generator-plugin'
+
+wrapper {
+  description "Regenerates the Gradle Wrapper files"
+  gradleVersion = '5.4'
+  distributionUrl = "http://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
+}
+
+boilerplateWebServiceResource {
+  taskDataModel = [
+    srcDir: sourceSets.main.java.srcDirs.first(), 
+    packagePrefix: 'com.my.microservice.',
+    resourceName: 'MyGeneratedResource'
+  ]
+}
+```
+
+... and from the shell issue the command:
+
+```
+./gradlew boilerplateWebServiceResource
+```
+
+Now you can find under your `src/main/java` a set of classes typically needed to manage a web service resource through the different layers of abstraction (persistence, service, controller, data transfer, entity modelling, etc).
+
 ## Getting Started
 
 Include the following in your build.gradle, to use this plugin:
@@ -16,10 +57,11 @@ Include the following in your build.gradle, to use this plugin:
 ```gradle
 buildscript {
   repositories {
+    jcenter()
     maven { url "https://dl.bintray.com/marco-ruiz/mavenRepo" }
   }
   dependencies {
-    classpath 'com.bop:gradle-boilerplate-generator-plugin:1.0.1'
+    classpath 'com.bop:gradle-boilerplate-generator-plugin:1.0.2'
   }
 }
 

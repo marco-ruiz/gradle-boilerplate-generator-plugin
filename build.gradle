@@ -16,7 +16,7 @@ plugins {
 eclipse.classpath.downloadJavadoc = true
 
 group = 'com.bop'
-version = '1.0.1'
+version = '1.0.2'
 description = 'Gradle plugin with tasks to generate customizable boilerplates (web resources files, subprojects, etc)'
 
 apply from: file('gradle/publish.gradle')
@@ -31,6 +31,12 @@ dependencies {
 	implementation localGroovy()
 	implementation 'org.freemarker:freemarker:2.3.28'
 	implementation 'org.yaml:snakeyaml:1.24'
+}
+
+wrapper {
+	description "Regenerates the Gradle Wrapper files"
+	gradleVersion = '5.4'
+	distributionUrl = "http://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
 }
 
 gradlePlugin {
