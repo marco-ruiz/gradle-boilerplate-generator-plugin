@@ -29,7 +29,7 @@ import org.gradle.api.file.FileTreeElement
 class GeneratorPlugin implements Plugin<Project> {
 	
 	private static final String PLUGIN_ROOT_URL = GeneratorPlugin.protectionDomain.codesource.location.toExternalForm()
-	private static final String BOILERPLATES_ROOT = "boilerplates/"
+	private static final String BOILERPLATES_ROOT = 'boilerplates/'
 	
 	void apply(Project project) {
 		FileTree pluginBundle = project.zipTree(PLUGIN_ROOT_URL)
