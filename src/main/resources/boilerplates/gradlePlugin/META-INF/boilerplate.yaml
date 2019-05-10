@@ -1,5 +1,5 @@
 dataModel:
-    srcDirString: "${project.projectDir}/buildSrc/src/main/groovy"
+    srcDir: "${project.projectDir}/buildSrc/src/main/groovy"
     pluginClassName: "MyPlugin"
     extensionName: "myPlugin"
 

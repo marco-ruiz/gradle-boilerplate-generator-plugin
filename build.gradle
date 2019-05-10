@@ -16,7 +16,7 @@ plugins {
 eclipse.classpath.downloadJavadoc = true
 
 group = 'com.bop'
-version = '1.0.2'
+version = '1.0.3'
 description = 'Gradle plugin with tasks to generate customizable boilerplates (web resources files, subprojects, etc)'
 
 apply from: file('gradle/publish.gradle')

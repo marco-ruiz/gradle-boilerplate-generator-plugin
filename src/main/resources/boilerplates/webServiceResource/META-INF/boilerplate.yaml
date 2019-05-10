@@ -1,6 +1,6 @@
 dataModel:
     resourceName: "MyResource"
-    packagePrefix: ""
+    packagePrefix: "packagePrefix."
 
 fileOutputs:
     classes:

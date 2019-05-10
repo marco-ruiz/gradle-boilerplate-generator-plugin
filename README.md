@@ -20,35 +20,32 @@ buildscript {
     maven { url "https://dl.bintray.com/marco-ruiz/mavenRepo" }
   }
   dependencies {
-    classpath 'com.bop:gradle-boilerplate-generator-plugin:1.0.2'
+    classpath 'com.bop:gradle-boilerplate-generator-plugin:+'
   }
 }
 
 apply plugin: 'java'
 apply plugin: 'com.bop.gradle-boilerplate-generator-plugin'
-
-wrapper {
-  description "Regenerates the Gradle Wrapper files"
-  gradleVersion = '5.4'
-  distributionUrl = "http://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
-}
-
-boilerplateWebServiceResource {
-  taskDataModel = [
-    srcDir: sourceSets.main.java.srcDirs.first(), 
-    packagePrefix: 'com.my.microservice.',
-    resourceName: 'MyGeneratedResource'
-  ]
-}
 ```
 
 ... and from the shell issue the command:
 
-```
+```console
 ./gradlew boilerplateWebServiceResource
 ```
 
-Now you can find under your `src/main/java` a set of classes typically needed to manage a web service resource through the different layers of abstraction (persistence, service, controller, data transfer, entity modelling, etc).
+... thereafter, you can expect to find a set of classes generated in your project under your `src/main/java`. These classes are typically needed to manage a web service resource through the different layers of abstraction (persistence, service, controller, data transfer, entity modelling, resource object, resource assembler, etc).
+
+Similarly if you issue the command:
+
+```console
+./gradlew boilerplateGradlePlugin
+```
+
+... thereafter, you can expect to find generated in your project a new `buildSrc` directory with a directory structure, `build.gradle` file and skeleton groovy classes for a [standard internal gradle object plugin](https://docs.gradle.org/current/userguide/organizing_gradle_projects.html#sec:build_sources).
+
+For more details on how to configure these particular **out-of-the-box** tasks, refer to the section [Out-of-the-box Boilerplates](#out-of-the-box-boilerplates).
+
 
 ## Getting Started
 

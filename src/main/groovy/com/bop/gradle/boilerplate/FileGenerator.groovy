@@ -16,6 +16,7 @@
 
 package com.bop.gradle.boilerplate
 
+import java.nio.file.Path
 import java.nio.file.Paths
 
 /**
@@ -24,7 +25,7 @@ import java.nio.file.Paths
 class FileGenerator {
 	
 	private static final FreeMarkerTranslator TRANSLATOR_FILENAMES = new FreeMarkerTranslator()
-
+	
 	FileDescriptor fileDescriptor
 	Map dataModel
 	File outputFile
@@ -37,25 +38,26 @@ class FileGenerator {
 		// Augment data model with newly resolved outputFile properties (not available when resolving it)
 		dataModel.outputFile = outputFile
 		if (fileDescriptor.isSource())
-			addClassDetailsToDataModel(outputFile.toString() - dataModel.srcDirString)
+			addClassDetailsToDataModel(dataModel.srcDir.toPath().relativize(outputFile.toPath()))
 	}
 	
 	File resolveFile() {
-		File rootFile = fileDescriptor.source ? new File(dataModel.srcDirString) : dataModel.project.projectDir
+		File rootFile = fileDescriptor.source ? dataModel.srcDir : dataModel.project.projectDir
 		String translatedOutputPath = TRANSLATOR_FILENAMES.translateTemplateString(dataModel, fileDescriptor.outputPath)
 		String[] branches = fileDescriptor.getTranslatedOutputPathBranches(translatedOutputPath)
 		Paths.get(rootFile.toString(), branches).toFile()
 	}
 
-	void addClassDetailsToDataModel(String classFilePath) {
+	void addClassDetailsToDataModel(Path classFilePath) {
 		String className = ''
-		String[] packageBranches = FileDescriptor.getPathBranches(classFilePath, File.separator)
-		if (!packageBranches[0]) packageBranches = packageBranches[(1..-1)]
-		
+		String[] packageBranches = FileDescriptor.getPathBranches(classFilePath.toString(), File.separator)
+
+		println packageBranches
+			
 		if (!fileDescriptor.isDirectory()) {
 			String classFileName = packageBranches[-1]
 			className = classFileName[0..<classFileName.lastIndexOf('.')]
-			packageBranches = packageBranches.length < 2 ? [] : packageBranches[(0..-2)]
+			packageBranches = packageBranches[(0..-2)]
 		}
 		
 		dataModel.fullPackage = packageBranches.join('.')
@@ -101,7 +103,7 @@ class FileGenerator {
 			}
 		}
 	}
-/*	
+/*
 	String evaluate(String text) {
 		text.replaceAll(/\$\{(.+?)\}/) { match -> binding[match[1]] ?: match[0] }
 	}

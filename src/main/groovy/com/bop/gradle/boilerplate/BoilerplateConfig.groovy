@@ -64,16 +64,15 @@ class FileDescriptor {
 	private static final String PACKAGE_SEPARATOR = '.';
 	private static final String FILE_PATH_SEPARATOR = '/';
 	private static final String DEFAULT_PACKAGE = 'defaultPackage'
-
-	static String[] getPathBranches(String childPath, String pathSeparator = FILE_PATH_SEPARATOR) {
-		getPathBranches(childPath, false)
-	}
 	
 	static String[] getPathBranches(String childPath, boolean isSource) {
-		String[] result = childPath.split(Pattern.quote(isSource ? PACKAGE_SEPARATOR : FILE_PATH_SEPARATOR))
-		return (isSource && result.length < 2) ? [DEFAULT_PACKAGE , *result] : result 
+		getPathBranches(childPath, isSource ? PACKAGE_SEPARATOR : FILE_PATH_SEPARATOR)
 	}
 
+	static String[] getPathBranches(String childPath, String pathSeparator = FILE_PATH_SEPARATOR) {
+		childPath.split(Pattern.quote(pathSeparator))
+	}
+	
 	boolean source, directory
 	String templatePath, outputPath
 	boolean reusable = false
@@ -94,7 +93,23 @@ class FileDescriptor {
 	String[] getTranslatedOutputPathBranches(String translatedOutputPath) {
 		String[] result = getPathBranches(translatedOutputPath, source)
 		result[-1] += outputExtension
-		return result
+		return normalizeBranches(result)
+	}
+	
+	String[] normalizeBranches(String[] branches) {
+		if (!source) return branches
+		
+		// Remove first one if empty
+		if (branches.length > 0 && !branches[0])
+			branches = branches[(1..-1)]
+		
+		// Prepend DEFAULT_PACKAGE if package not found
+		int minBranchesExpected = directory ? 1 : 2 // package OR package.className
+		if (branches.length < minBranchesExpected) {
+			def newPackageBranches = [DEFAULT_PACKAGE, *branches] // Stupid groovy BUG (GROOVY-4255)!!!
+			branches = newPackageBranches
+		}
+		return branches
 	}
 }
 

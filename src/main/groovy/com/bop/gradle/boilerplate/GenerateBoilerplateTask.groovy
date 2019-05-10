@@ -86,8 +86,10 @@ class GenerateBoilerplateTask extends DefaultTask {
 			result[key] = translator.translateTemplateString(taskDataModel, value) 
 		}
 		result += taskDataModel
-		if (!result.srcDirString) 
-			result.srcDirString = result.srcDir?.toString() ?: result.project.sourceSets.main.java.srcDirs.first().toString()
+		if (!result.srcDir) 
+			result.srcDir = result.project.sourceSets.main.java.srcDirs.first()
+			
+		result.srcDir = new File(result.srcDir.toString())
 		return result
 	}
 	
