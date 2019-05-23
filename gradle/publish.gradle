@@ -41,11 +41,11 @@ def buildAuth = [
 	signingPassword: hasProperty('signing.password') ? getProperty('signing.password') : System.env.SIGNING_PASSWORD
 ]
 
-def userName = 'Marco Ruiz'
-def userEmail = 'marco.a.ruiz@gmail.com'
+def userName = hasProperty('userName') ? getProperty('userName') : ''
+def userEmail = hasProperty('userEmail') ? getProperty('userEmail') : ''
 
 def scmHost = 'github.com'
-def scmHostUserId = 'marco-ruiz'
+def scmHostUserId = hasProperty('scmHostUserId') ? getProperty('scmHostUserId') : ''
 
 def scmHostUrl = "https://${scmHost}"
 def scmRepo = "${scmHostUserId}/${project.name}"

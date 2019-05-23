@@ -52,8 +52,6 @@ class FileGenerator {
 		String className = ''
 		String[] packageBranches = FileDescriptor.getPathBranches(classFilePath.toString(), File.separator)
 
-		println packageBranches
-			
 		if (!fileDescriptor.isDirectory()) {
 			String classFileName = packageBranches[-1]
 			className = classFileName[0..<classFileName.lastIndexOf('.')]

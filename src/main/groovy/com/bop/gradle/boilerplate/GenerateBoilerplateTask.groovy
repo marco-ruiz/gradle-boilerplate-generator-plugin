@@ -71,9 +71,10 @@ class GenerateBoilerplateTask extends DefaultTask {
 		boolean failed = errors.find { !it.isEmpty() }
 		
 		if (failed) {
-			println "Unable to satisfy requirements to generate boilerplate:"
+			logger.error "Unable to satisfy requirements to generate boilerplate:"
 			errors.eachWithIndex { errorMsg, idx ->
-				if (!errorMsg.isEmpty()) println "[${idx + 1}]: ${errorMsg}"
+				if (!errorMsg.isEmpty()) 
+					logger.error "[${idx + 1}]: ${errorMsg}"
 			}
 		}
 		return !failed
